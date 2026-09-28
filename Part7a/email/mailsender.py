@@ -9,14 +9,16 @@ to_addr = os.environ['TO_ADDRESS']
 
 class Mail:
     def __init__(self):
-        self.port = 465
+        self.port = 587
         self.smtp_server_domain_name = "smtp.gmail.com"
         self.sender_mail = os.environ['FROM_ADDRESS']
         self.password = os.environ['FROM_PASSWORD'] 
 
     def send(self, emails, subject, content):
-        ssl_context = ssl.create_default_context()
-        service = smtplib.SMTP_SSL(self.smtp_server_domain_name, self.port, context=ssl_context)
+        # ssl_context = ssl.create_default_context()
+        # service = smtplib.SMTP_SSL(self.smtp_server_domain_name, self.port, context=ssl_context)
+        service = smtplib.SMTP(self.smtp_server_domain_name, self.port)
+        service.starttls(context=ssl.create_default_context())
         service.login(self.sender_mail, self.password)
         
         for email in emails:
